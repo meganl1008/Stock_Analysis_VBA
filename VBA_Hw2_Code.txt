@@ -1,0 +1,163 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf600
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww18620\viewh14080\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 Sub stock_analysis():\
+\
+'Declare dimensions\
+Dim tickerSymbol As String\
+Dim startDate As Long\
+Dim startPrice As Double\
+Dim endPrice As Double\
+Dim priceChange As Double\
+Dim percentChange As Double\
+Dim volumeTotal As Double\
+Dim i As Long\
+Dim j As Long\
+Dim k As Long\
+Dim column As Integer\
+Dim maxValue_PercentChange As Double\
+Dim minValue_PercentChange As Double\
+Dim WorksheetName As String\
+\
+    For Each ws In Worksheets\
+    \
+        'Declare initial values\
+        volumeTotal = 0\
+        startDate = 2\
+        priceEnd = 0\
+        priceChange = 0\
+        column = 0\
+        maxValue_PercentChange = 0\
+        minValue_PercentChange = 0\
+        maxValue_TotalVolume = 0\
+            \
+        'Declare header names for each worksheet\
+        ws.Cells(1, 9).Value = "Ticker"\
+        ws.Cells(1, 10).Value = "Yearly Change"\
+        ws.Cells(1, 11).Value = "Percent Change"\
+        ws.Cells(1, 12).Value = "Total Stock Volume"\
+    \
+        ws.Cells(1, 16).Value = "Ticker"\
+        ws.Cells(1, 17).Value = "Value"\
+        ws.Cells(2, 15).Value = "Greatest % Increase"\
+        ws.Cells(3, 15).Value = "Greatest % Decrease"\
+        ws.Cells(4, 15).Value = "Greatest Total Volume"\
+        \
+        'Determine last row in data\
+        LastRow = ws.Cells(Rows.Count, 1).End(xlUp).Row\
+\
+        For i = 2 To LastRow\
+        \
+            'check to see if when ticker symbol changes\
+            If ws.Cells(i + 1, 1).Value <> ws.Cells(i, 1).Value Then\
+                'store answers in variables\
+                volumeTotal = volumeTotal + ws.Cells(i, 7).Value\
+                tickerSymbol = ws.Cells(i, 1).Value\
+                priceEnd = ws.Cells(i, 6).Value\
+            \
+                'determine solutions if volumeTotal is 0\
+                If volumeTotal = 0 Then\
+                    ws.Range("i" & 2 + column).Value = ws.Cells(i, 1).Value\
+                    ws.Range("j" & 2 + column).Value = 0\
+                    ws.Range("k" & 2 + column).Value = "%" & 0\
+                    ws.Range("l" & 2 + column).Value = 0\
+                Else\
+                    'find first non zero starting value\
+                    If ws.Cells(startDate, 3).Value = 0 Then\
+                        For find_value = startDate To i\
+                            If ws.Cells(find_value, 3).Value <> 0 Then\
+                                startDate = find_value\
+                                Exit For\
+                            End If\
+                        Next find_value\
+                    End If\
+\
+                    'find yearly price change\
+                    priceChange = Round((priceEnd - ws.Cells(startDate, 3)), 2)\
+                    percentChange = Round(priceChange / ws.Cells(startDate, 3) * 100, 2)\
+    \
+                    'start next ticker\
+                    startDate = i + 1\
+        \
+                    'print ticker symbol, yearly change, percent change and total volume in summary table\
+                    ws.Range("I" & 2 + column).Value = tickerSymbol\
+                    ws.Range("J" & 2 + column).Value = Round(priceChange, 2)\
+                    ws.Range("K" & 2 + column).Value = "%" & percentChange\
+                    ws.Range("L" & 2 + column).Value = volumeTotal\
+         \
+                    'Determine conditional formatting for yearly change: if positive then color green if negative then color red\
+                    If priceChange > 0 Then\
+                        ws.Range("j" & 2 + column).Interior.ColorIndex = 4\
+                    ElseIf priceChange < 0 Then\
+                        ws.Range("j" & 2 + column).Interior.ColorIndex = 3\
+                    Else\
+                        ws.Range("j" & 2 + column).Interior.ColorIndex = 0\
+                    End If\
+        \
+                End If\
+    \
+                'reset variables\
+                column = column + 1\
+                volumeTotal = 0\
+                priceEnd = 0\
+                priceChange = 0\
+                percentChange = 0\
+            \
+            Else\
+               'if ticker is the same in next cell then add to existing total volume\
+                volumeTotal = volumeTotal + ws.Cells(i, 7).Value\
+    \
+            End If\
+    \
+        Next i\
+\
+        'Determine last row in percent change summary table for bonus question\
+        LastRow_PercentChange = ws.Cells(Rows.Count, 11).End(xlUp).Row\
+    \
+        For j = 2 To LastRow_PercentChange\
+            'Find greatest percent increase\
+            If ws.Cells(j, 11).Value > maxValue_PercentChange Then\
+                maxValue_PercentChange = (ws.Cells(j, 11).Value)\
+                maxTicker_PercentChange = ws.Cells(j, 9).Value\
+            End If\
+\
+            'Find greatest % decrease\
+            If ws.Cells(j, 11).Value < minValue_PercentChange Then\
+                minValue_PercentChange = (ws.Cells(j, 11).Value)\
+                minTicker_PercentChange = ws.Cells(j, 9).Value\
+            End If\
+        \
+        Next j\
+    \
+        'Determine last row in total volume summary table for bonus question\
+        LastRow_TotalVolume = ws.Cells(Rows.Count, 12).End(xlUp).Row\
+\
+        For k = 2 To LastRow_TotalVolume\
+            'Determine greatest total volume\
+            If ws.Cells(k, 12).Value > maxValue_TotalVolume Then\
+                maxValue_TotalVolume = ws.Cells(k, 12).Value\
+                maxTicker_TotalVolume = ws.Cells(k, 9).Value\
+            End If\
+        Next k\
+    \
+        'change max and min value to percent by multiplying by 100\
+        maxValue_PercentChange = maxValue_PercentChange * 100\
+        minValue_PercentChange = minValue_PercentChange * 100\
+    \
+        'Print out max/min value and their respective ticker in the summary table\
+        ws.Cells(4, 16).Value = maxTicker_TotalVolume\
+        ws.Cells(4, 17).Value = maxValue_TotalVolume\
+        ws.Cells(2, 16).Value = maxTicker_PercentChange\
+        ws.Cells(2, 17).Value = maxValue_PercentChange & "%"\
+        ws.Cells(3, 16).Value = minTicker_PercentChange\
+        ws.Cells(3, 17).Value = minValue_PercentChange & "%"\
+    \
+    Next ws\
+\
+End Sub\
+    \
+}
