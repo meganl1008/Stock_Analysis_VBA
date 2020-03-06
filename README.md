@@ -3,6 +3,7 @@ Identifying stock trends using VBA
 
 ## Files
 Sample test file
+
 Can provide full data set upon requests 
 
 ## Process 
@@ -16,6 +17,7 @@ Create a script that will loop through all the stocks for one year and output th
 - Script should be able to run on every worksheet i.e. every year just by running the VBA script once
 
 ## Results
-!(2014.png)
+2014 results
+![](2014.png)
 
 
