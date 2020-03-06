@@ -3,6 +3,7 @@ Identify stock trends from with VBA
 
 ## Files
 Stock market data from 2014-2016
+
 Can provide dataset upon requests 
 
 ## Process 
