@@ -1,10 +1,9 @@
 # Stock Market Analysis
-Identify stock trends from 2014-2016 with VBA
+Identify stock trends from with VBA
 
 ## Files
-Sample test file
-
-Can provide full data set upon requests 
+Stock market data from 2014-2016
+Can provide dataset upon requests 
 
 ## Process 
 Create a script that will loop through all the stocks for one year and output the following information:
