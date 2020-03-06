@@ -17,7 +17,13 @@ Create a script that will loop through all the stocks for one year and output th
 - Script should be able to run on every worksheet i.e. every year just by running the VBA script once
 
 ## Results
-2014 results
+<b> 2014 Results </b>
 ![](2014.png)
+
+<b> 2015 Results </b>
+![](2015.png)
+
+<b> 2016 Results </b>
+![](2016.png)
 
 
