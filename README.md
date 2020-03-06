@@ -1,4 +1,4 @@
-# Stock Market Analysis
+# VBA of Wall Street
 Identify stock trends with VBA
 
 ## Files
