@@ -1,5 +1,5 @@
 # Stock Market Analysis
-Identify stock trends from with VBA
+Identify stock trends with VBA
 
 ## Files
 Stock market data from 2014-2016
